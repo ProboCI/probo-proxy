@@ -5,4 +5,4 @@ containerLookupHost: "http://localhost:3020"
 cacheMax: 500
 
 # Max age of proxy lookup responses in cache, in any unit (units default to ms). Defaults to 5 min
-cacheMaxAge: 5m
+cacheMaxAge: 1s
