@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "prod": "node -c prod.yaml index.js",
-    "dev": "node -c dev.yaml index.js | bunyan",
+    "prod": "node index.js -c prod.yaml",
+    "dev": "node index.js -c dev.yaml | bunyan",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ilya Braude <ilya@bluenexa.com>",
