@@ -4,6 +4,9 @@
   "description": "Smart HTTP site proxy for ProboCI",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
+    "prod": "node -c prod.yaml index.js",
+    "dev": "node -c dev.yaml index.js | bunyan",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ilya Braude <ilya@bluenexa.com>",

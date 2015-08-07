@@ -7,7 +7,8 @@ config.load(function(error, config) {
     throw error
   }
 
-  proxy.listen(5050);
-  log.info("listening on port 5050")
-  log.debug({config: config}, "config")
+  proxy.listen(config.port, function(){
+    log.info("listening on port", proxy.address().port)
+    log.debug({config: config}, "config")
+  });
 });
