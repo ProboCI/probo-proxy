@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "prod": "node index.js -c prod.yaml",
-    "dev": "node index.js -c dev.yaml | bunyan",
+    "dev": "nodemon index.js -c dev.yaml | bunyan",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ilya Braude <ilya@bluenexa.com>",
