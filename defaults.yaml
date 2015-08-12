@@ -1,5 +1,5 @@
 # port that the proxy server is running on
-port: 3030
+port: 3050
 
 # Host for the container lookup service that maps a build id to a host/port to proxy to
 containerLookupHost: "http://localhost:3020"
