@@ -1,0 +1,64 @@
+[
+  {
+    "scope": "http://localhost:3020",
+    "method": "POST",
+    "path": "/builds/ccb2f22d-6b31-49e3-b95b-98ec823bd6f8/container/proxy",
+    "body": "",
+    "status": 200,
+    "response": {
+      "proxy": {
+        "host": "localhost",
+        "port": "49348",
+        "url": "http://localhost:49348/"
+      },
+      "buildConfig": {
+        "image": "lepew/ubuntu-14.04-lamp",
+        "steps": [
+          {
+            "command": "echo done > /dev/null",
+            "name": "quick task",
+            "plugin": "Shell"
+          },
+          {
+            "command": "sleep 1 && ps auxww; date",
+            "name": "task 1",
+            "plugin": "Shell"
+          },
+          {
+            "command": "sleep 2 &&  netstat -ant",
+            "name": "task 2",
+            "plugin": "Shell"
+          }
+        ]
+      },
+      "status": {
+        "up": true,
+        "info": "ok",
+        "ts": "2015-09-09T16:14:57.123Z"
+      }
+    },
+    "headers": {
+      "content-type": "application/json",
+      "content-length": "420",
+      "date": "Wed, 09 Sep 2015 16:14:57 GMT",
+      "connection": "close"
+    }
+  },
+  {
+    "scope": "http://localhost:3020",
+    "method": "POST",
+    "path": "/builds/404/container/proxy",
+    "body": "",
+    "status": 404,
+    "response": {
+      "code": "ResourceNotFound",
+      "message": "Build not found for build id: 404"
+    },
+    "headers": {
+      "content-type": "application/json",
+      "content-length": "73",
+      "date": "Wed, 09 Sep 2015 16:14:57 GMT",
+      "connection": "close"
+    }
+  }
+]

@@ -1,14 +1,15 @@
-var proxy = require('./lib/proxy')
 var config = require('./lib/config')
-var log = require('./lib/logger').getLogger()
 
 config.load(function(error, config) {
   if (error){
     throw error
   }
 
-  proxy.listen(config.port, function(){
-    log.info("listening on port", proxy.address().port)
+  var server = require('./lib/proxy').server
+  var log = require('./lib/logger').getLogger()
+
+  server.listen(config.port, function(){
+    log.info("listening on port", server.address().port)
     log.debug({config: config}, "config")
   });
 });
