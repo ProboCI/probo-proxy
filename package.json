@@ -8,7 +8,8 @@
     "prod": "node index.js -c prod.yaml",
     "dev": "nodemon index.js -c dev.yaml | bunyan",
     "test": "mocha --recursive --require should",
-    "testw": "mocha -w --recursive --require should"
+    "testw": "mocha -w --recursive --require should",
+    "coverage": "istanbul cover _mocha -- -u exports -R spec --recursive --require should"
   },
   "author": "Ilya Braude <ilya@bluenexa.com>",
   "license": "Proprietary",
@@ -26,6 +27,7 @@
   "devDependencies": {
     "bluebird": "^2.10.0",
     "co-mocha": "^1.1.2",
+    "istanbul": "^0.3.19",
     "mocha": "^2.3.2",
     "nock": "^2.10.0",
     "should": "^7.1.0",
