@@ -125,6 +125,14 @@ describe("utils", function(){
       }).should.throw("Destination identifier parse error: invalid modifier: blah")
     })
 
+    it("invalid modifier type", function(){
+      var dest_str = "12-345--hello-world";
+
+      (function(){
+        utils.parseDest(dest_str)
+      }).should.throw("Destination identifier parse error: invalid modifier type: hello")
+    })
+
     it("branch and pr should error", function(){
       var dest_str = "12-345--br-feature2--pr-34";
 
