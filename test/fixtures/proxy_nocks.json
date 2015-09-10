@@ -13,6 +13,10 @@
       },
       "buildConfig": {
         "image": "lepew/ubuntu-14.04-lamp",
+        "sites": {
+          "us": "us.domain.com",
+          "default": "domain.com"
+        },
         "steps": [
           {
             "command": "echo done > /dev/null",

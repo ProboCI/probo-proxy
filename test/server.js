@@ -2,6 +2,7 @@
 var config = require('../lib/config')
 
 // HTTP HELPERS
+var http = require('http')
 var request = require('superagent-promise')(require('superagent'), require('bluebird'));
 
 
@@ -61,17 +62,19 @@ function init_nock(fixture, opts){
       }
 
       // makesure all internal calls were made
-      for(var nock_name in required_nocks){
-        required_nocks[nock_name].done();
+      try {
+        for(var nock_name in required_nocks){
+          required_nocks[nock_name].done();
+        }
+      } finally {
+        nock.cleanAll()
       }
-
-      nock.cleanAll()
     }
   }
 }
 
 describe("lookup tests", function(){
-  var conf, proxy, proxy_lookup
+  var conf, server, proxy, proxy_lookup, proxy_rewrite
 
   before("load config", function(done){
     config.load(function(err, _config){
@@ -79,22 +82,24 @@ describe("lookup tests", function(){
       // console.log({conf: conf}, "config")
 
       // make sure to require these after config is loaded
-      proxy = require('../lib/proxy')
+      server = require('../lib/proxy').server
+      proxy = require('../lib/proxy').proxy
       proxy_lookup = require('../lib/proxy-lookup')
+      proxy_rewrite = require('../lib/proxy-rewrite')
 
       done(err, conf)
     })
   })
 
   before("start server", function(done){
-    proxy.listen(0, function(){
-      console.log("listening on port", proxy.address().port)
+    server.listen(0, function(){
+      console.log("listening on port", server.address().port)
       done()
     });
   });
 
   after("stop server", function(){
-    proxy.close()
+    server.close()
   });
 
   describe("proxy lookup", function(){
@@ -110,7 +115,7 @@ describe("lookup tests", function(){
 
     it("good build id", function(done){
       var buildId = "ccb2f22d-6b31-49e3-b95b-98ec823bd6f8"
-      proxy_lookup(buildId, function(err, response){
+      proxy_lookup({build: buildId}, function(err, response){
         if(err) return done(err)
 
         response.should.containEql({
@@ -127,7 +132,7 @@ describe("lookup tests", function(){
 
     it("bad build id", function(done){
       var buildId = "404"
-      proxy_lookup(buildId, function(err, response){
+      proxy_lookup({build: buildId}, function(err, response){
         err.message.should.eql(
           '{"code":"ResourceNotFound","message":"Build not found for build id: 404"}'
         )
@@ -135,6 +140,8 @@ describe("lookup tests", function(){
       })
     })
   })
+
+
 
   describe("proxy", function(){
     var nocker
@@ -159,13 +166,15 @@ describe("lookup tests", function(){
       try {
         // makes 2 HTTP calls - one to lookup the proxy endpoint, and one to to the endpoint itself
         var result = yield request
-            .get(`http://localhost:${proxy.address().port}`)
+            .get(`http://localhost:${server.address().port}`)
             .query({proboBuildId: buildId})
             .end()
 
         result.res.text.should.eql("proxied page")
       } catch (e){
-        console.log(e.response.error)
+        if(e.response){
+          console.log(e.response.error)
+        }
         throw e
       }
     })
@@ -178,7 +187,7 @@ describe("lookup tests", function(){
     //     //  - one to lookup the proxy endpoint (first mock - 2nd time)
     //     //  - one to the endpoint itself (mocked to 500 second time)
     //     yield request
-    //         .get(`http://localhost:${proxy.address().port}`)
+    //         .get(`http://localhost:${server.address().port}`)
     //         .query({proboBuildId: buildId})
     //         .end()
     //   } catch (e){
@@ -199,7 +208,7 @@ describe("lookup tests", function(){
 
       try {
         yield request
-            .get(`http://localhost:${proxy.address().port}`)
+            .get(`http://localhost:${server.address().port}`)
             .query({proboBuildId: buildId})
             .end()
       } catch (e){
@@ -211,4 +220,76 @@ describe("lookup tests", function(){
       }
     })
   })
+
+
+  describe("proxy rewrites", function(){
+    function createProxyInfo(buildConfigSites, dest){
+      // sample options that will be passed in to the rewriter
+      // (just including the probo part)
+      var options = {
+        probo: {
+          target: {
+            url: 'http://localhost:49348/',
+            dest: dest || {
+              id: 'ccb2f22d-6b31-49e3-b95b-98ec823bd6f8', post: undefined
+            },
+            buildConfig: {
+              image: 'lepew/ubuntu-14.04-lamp',
+              sites: buildConfigSites
+            }
+          }
+        }
+      }
+
+      var proxyReq = http.request({
+        // representative default headers
+        headers: {
+          host: 'localhost:38937',
+          'accept-encoding': 'gzip, deflate',
+          'user-agent': 'node-superagent/1.3.0',
+          connection: 'close',
+          'x-forwarded-for': '::ffff:127.0.0.1',
+          'x-forwarded-port': '38937',
+          'x-forwarded-proto': 'http'
+        }
+      })
+
+      return {proxyReq, options}
+    }
+
+    it("nothing by default", function(done){
+      var proxyInfo = createProxyInfo()
+      proxy_rewrite(proxyInfo.proxyReq, null, null, proxyInfo.options)
+
+      "localhost:38937".should.eql(proxyInfo.proxyReq.getHeader('host'))
+      done()
+    })
+
+    it("nothing by default but with sites specified", function(done){
+      var proxyInfo = createProxyInfo({us: 'us.domain.com'})
+      proxy_rewrite(proxyInfo.proxyReq, null, null, proxyInfo.options)
+
+      "localhost:38937".should.eql(proxyInfo.proxyReq.getHeader('host'))
+      done()
+    })
+
+    it("default domain with bare build id", function(done){
+      var proxyInfo = createProxyInfo({ us: 'us.domain.com', default: 'domain.com' },
+                                      { id: "buildid" })
+      proxy_rewrite(proxyInfo.proxyReq, null, null, proxyInfo.options)
+
+      "domain.com".should.eql(proxyInfo.proxyReq.getHeader('host'))
+      done()
+    })
+
+    it("specified domain with postfix syntax", function(done){
+      var proxyInfo = createProxyInfo({ us: 'us.domain.com', default: 'domain.com' },
+                                      { id: "buildid", site: "us" })
+      proxy_rewrite(proxyInfo.proxyReq, null, null, proxyInfo.options)
+
+      "us.domain.com".should.eql(proxyInfo.proxyReq.getHeader('host'))
+      done()
+    })
+  })
+
 })
