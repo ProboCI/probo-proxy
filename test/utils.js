@@ -62,6 +62,16 @@ describe("utils", function(){
       })
     })
 
+    it("modifier value can have dashes", function(){
+      var dest_str = "12-345--site-us-awesome-site"
+      var dest = utils.parseDest(dest_str)
+      dest.should.eql({
+        build: "12-345",
+        site: "us-awesome-site",
+        dest: dest_str
+      })
+    })
+
     it("project id with PR", function(){
       var dest_str = "12-345--pr-2"
       var dest = utils.parseDest(dest_str)
