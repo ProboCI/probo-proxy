@@ -53,10 +53,11 @@ describe("lookup tests", function(){
         if(err) return done(err)
 
         response.should.containEql({
-          proxy:
-          { host: 'localhost',
+          proxy: {
+            host: 'localhost',
             port: '49348',
-            url: 'http://localhost:49348/' }
+            url: 'http://localhost:49348/'
+          }
         })
 
         response.should.have.properties(["buildConfig", "status"])
@@ -73,6 +74,19 @@ describe("lookup tests", function(){
         done()
       })
     })
+
+
+    it("good project & pr", function(done){
+      proxy_lookup({pr: "2", project: "project-alias"}, function(err, response){
+        if(err) return done(err)
+
+        // no need for the full proxy response here,
+        // just verify that we hit the right endpoint
+        response.should.eql({mocked: true})
+        done()
+      })
+    })
+
   })
 
 

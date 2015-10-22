@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "prod": "node index.js -c prod.yaml",
-    "dev": "nodemon index.js -c dev.yaml | bunyan",
+    "startdev": "nodemon index.js -c dev.yaml | bunyan",
     "test": "mocha --recursive --require should",
     "testw": "mocha -w --recursive --require should",
     "coverage": "istanbul cover _mocha -- -u exports -R spec --recursive --require should"
@@ -16,6 +16,7 @@
   "dependencies": {
     "bunyan": "^1.4.0",
     "http-proxy": "^1.11.1",
+    "lodash": "^3.10.1",
     "lru-cache": "^2.6.5",
     "ms": "^0.7.1",
     "request": "^2.60.0",
