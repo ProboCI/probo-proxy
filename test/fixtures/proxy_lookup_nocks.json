@@ -51,7 +51,27 @@
     "body": "",
     "status": 200,
     "response": {
-      "mocked": true
+      "mocked": true,
+      "pr": "2",
+      "project": "project-alias"
+    },
+    "headers": {
+      "content-type": "application/json",
+      "content-length": "420",
+      "date": "Wed, 09 Sep 2015 16:14:57 GMT",
+      "connection": "close"
+    }
+  },
+  {
+    "scope": "http://localhost:3020",
+    "method": "POST",
+    "path": "/container/proxy?branch=branch&project=project-alias",
+    "body": "",
+    "status": 200,
+    "response": {
+      "mocked": true,
+      "branch": "branch",
+      "project": "project-alias"
     },
     "headers": {
       "content-type": "application/json",

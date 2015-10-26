@@ -82,7 +82,18 @@ describe("lookup tests", function(){
 
         // no need for the full proxy response here,
         // just verify that we hit the right endpoint
-        response.should.eql({mocked: true})
+        response.should.eql({mocked: true, pr: '2', project: 'project-alias'})
+        done()
+      })
+    })
+
+    it("good project & branch", function(done){
+      proxy_lookup({branch: "branch", project: "project-alias"}, function(err, response){
+        if(err) return done(err)
+
+        // no need for the full proxy response here,
+        // just verify that we hit the right endpoint
+        response.should.eql({mocked: true, branch: 'branch', project: 'project-alias'})
         done()
       })
     })
