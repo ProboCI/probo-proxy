@@ -2,7 +2,7 @@
   {
     "scope": "http://localhost:3020",
     "method": "POST",
-    "path": "/builds/ccb2f22d-6b31-49e3-b95b-98ec823bd6f8/container/proxy",
+    "path": "/container/proxy?build=ccb2f22d-6b31-49e3-b95b-98ec823bd6f8",
     "body": "",
     "status": 200,
     "response": {
@@ -47,7 +47,43 @@
   {
     "scope": "http://localhost:3020",
     "method": "POST",
-    "path": "/builds/404/container/proxy",
+    "path": "/container/proxy?pr=2&project=project-alias",
+    "body": "",
+    "status": 200,
+    "response": {
+      "mocked": true,
+      "pr": "2",
+      "project": "project-alias"
+    },
+    "headers": {
+      "content-type": "application/json",
+      "content-length": "420",
+      "date": "Wed, 09 Sep 2015 16:14:57 GMT",
+      "connection": "close"
+    }
+  },
+  {
+    "scope": "http://localhost:3020",
+    "method": "POST",
+    "path": "/container/proxy?branch=branch&project=project-alias",
+    "body": "",
+    "status": 200,
+    "response": {
+      "mocked": true,
+      "branch": "branch",
+      "project": "project-alias"
+    },
+    "headers": {
+      "content-type": "application/json",
+      "content-length": "420",
+      "date": "Wed, 09 Sep 2015 16:14:57 GMT",
+      "connection": "close"
+    }
+  },
+  {
+    "scope": "http://localhost:3020",
+    "method": "POST",
+    "path": "/container/proxy?build=404",
     "body": "",
     "status": 404,
     "response": {

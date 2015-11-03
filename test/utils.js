@@ -42,7 +42,7 @@ describe("utils", function(){
 
       (function(){
         utils.getDest(req)
-      }).should.throw('Destination identifier not found in domain or query param, host: domain.com')
+      }).should.throw('Destination identifier not found in domain or query param, host: domain.com, url: /')
     })
   })
 
