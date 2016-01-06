@@ -1,5 +1,7 @@
 var config = require('./lib/config')
 
+process.title = 'probo-proxy'
+
 config.load(function(error, config) {
   if (error){
     throw error
