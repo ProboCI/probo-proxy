@@ -56,9 +56,9 @@ function initNock(fixture, opts) {
 
       // makesure all internal calls were made
       try {
-        for (var nockName in requiredNocks) {
-          requiredNocks[nockName].done();
-        }
+        requiredNocks.forEach(function(n) {
+          n.done();
+        });
       }
       finally {
         nock.cleanAll();
