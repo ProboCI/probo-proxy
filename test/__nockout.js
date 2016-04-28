@@ -1,69 +1,71 @@
+'use strict';
+
 // NOCK CONFIGUATION
-// var default_nock_mode = "RECORD"
-var default_nock_mode = "PLAY"
+var defaultNockMode = 'PLAY';
 
-var nock = require('nock')
+var nock = require('nock');
 // opts: {processor, not_required, mode}
-function init_nock(fixture, opts){
-  var fixture_file = "./test/fixtures/" + fixture
+function initNock(fixture, opts) {
+  var fixtureFile = './test/fixtures/' + fixture;
 
-  var nocked = {}
-  var required_nocks = []
+  var nocked = {};
+  var requiredNocks = [];
 
-  opts = opts || {}
-  opts.not_required = opts.not_required || []
+  opts = opts || {};
+  opts.not_required = opts.not_required || [];
 
-  var nock_mode = opts.mode || default_nock_mode
+  var nockMode = opts.mode || defaultNockMode;
 
-  var nocks
-  if(nock_mode === "PLAY"){
-    nocks = nock.load(fixture_file)
+  var nocks;
+  if (nockMode === 'PLAY') {
+    nocks = nock.load(fixtureFile);
 
-    if(opts.processor){
-      nocks = opts.processor(nocks)
+    if (opts.processor) {
+      nocks = opts.processor(nocks);
     }
 
-    nocks.forEach(function(n, i){
-      nocked['loaded_' + i] = n
-    })
+    nocks.forEach(function(n, i) {
+      nocked['loaded_' + i] = n;
+    });
 
     // allow some mocks to be not required
-    Object.keys(nocked).filter(function(name){
-      return opts.not_required.indexOf(name) < 0
-    }).forEach(function(name){
-      required_nocks.push(nocked[name])
-    })
+    Object.keys(nocked).filter(function(name) {
+      return opts.not_required.indexOf(name) < 0;
+    }).forEach(function(name) {
+      requiredNocks.push(nocked[name]);
+    });
   }
 
-  if(nock_mode === "RECORD"){
-    console.log("recording")
+  if (nockMode === 'RECORD') {
+    console.log('recording');
     nock.recorder.rec({
       output_objects: true,
-      dont_print: true
-    })
+      dont_print: true,
+    });
   }
 
   return {
     nocked: nocked,
     nocks: nocks,
-    required: required_nocks,
-    cleanup: function(){
-      if(nock_mode === "RECORD"){
+    required: requiredNocks,
+    cleanup: function() {
+      if (nockMode === 'RECORD') {
         var nockCallObjects = nock.recorder.play();
-        require('fs').writeFileSync(fixture_file, JSON.stringify(nockCallObjects, null, 2));
+        require('fs').writeFileSync(fixtureFile, JSON.stringify(nockCallObjects, null, 2));
       }
 
       // makesure all internal calls were made
       try {
-        for(var nock_name in required_nocks){
-          required_nocks[nock_name].done();
+        for (var nockName in requiredNocks) {
+          requiredNocks[nockName].done();
         }
-      } finally {
-        nock.cleanAll()
       }
-    }
-  }
+      finally {
+        nock.cleanAll();
+      }
+    },
+  };
 }
 
 
-module.exports = init_nock
+module.exports = initNock;
