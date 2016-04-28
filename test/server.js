@@ -176,7 +176,7 @@ describe('lookup tests', function() {
           target: {
             url: 'http://localhost:49348/',
             dest: dest || {
-              id: 'ccb2f22d-6b31-49e3-b95b-98ec823bd6f8', post: undefined,
+              id: 'ccb2f22d-6b31-49e3-b95b-98ec823bd6f8', post: null,
             },
             buildConfig: {
               image: 'lepew/ubuntu-14.04-lamp',
