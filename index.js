@@ -1,7 +1,6 @@
 'use strict';
 
 var ms = require('ms');
-
 var config = require('./lib/config');
 
 process.title = 'probo-proxy';
