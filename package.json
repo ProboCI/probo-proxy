@@ -22,8 +22,8 @@
     "request": "^2.60.0",
     "restify": "^3.0.3",
     "uuid": "^2.0.1",
-    "yaml-config-loader": "^1.2.2",
-    "yargs": "^3.16.1"
+    "yaml-config-loader": "^2.0.1",
+    "yargs": "^4.6.0 "
   },
   "devDependencies": {
     "bluebird": "^2.10.0",
