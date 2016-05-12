@@ -16,11 +16,11 @@
   "dependencies": {
     "bunyan": "^1.4.0",
     "http-proxy": "^1.11.1",
-    "lodash": "^3.10.1",
+    "lodash": "^4.12.0",
     "lru-cache": "^2.6.5",
     "ms": "^0.7.1",
     "request": "^2.60.0",
-    "restify": "^3.0.3",
+    "restify": "^4.0.4",
     "uuid": "^2.0.1",
     "yaml-config-loader": "^2.0.1",
     "yargs": "^4.6.0 "
