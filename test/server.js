@@ -157,11 +157,136 @@ describe('lookup tests', function() {
             .end();
       }
       catch (e) {
-        // confirm a "Bad request" response (indicating lookup error)
+        // Confirm a "Bad request" response (indicating lookup error).
         e.response.status.should.eql(400);
         e.response.text.should.eql(
           'Proxy error: {"code":"ResourceNotFound","message":"Build not found for build id: 404"}\n'
         );
+      }
+    });
+
+    it('returns a redirection if it receives a 404', function* () {
+      var buildId = 'aab2f22d-6b31-49e3-b95b-98ec823bd6f8';
+      // Set the redirection URL;
+      conf.redirectUrl = 'http://test.com';
+
+      try {
+        var result = yield request
+          .get(`http://localhost:${server.address().port}`)
+          .set('accept', 'text/html')
+          .redirects(0)
+          .query({proboBuildId: buildId})
+          .end();
+
+        // This shouldn't happen. We should throw an error so the real test in
+        // the catch statement.
+        result.should.equal(null);
+      }
+      catch (e) {
+        // Since we have a redirection URL set and accept headers for HTML we
+        // should get a redirection.
+        e.response.statusCode.should.eql(302);
+        e.response.header.location.should.eql('http://test.com?errorCode=404R');
+      }
+    });
+
+    it('returns HTML if it receives a 404', function* () {
+      var buildId = 'acb2f22d-6b31-49e3-b95b-98ec823bd6f8';
+      // Set the redirection URL;
+      conf.redirectUrl = '';
+      // Set the redirection URL;
+      conf.custom404Html = '<h1>NOGO</h1>';
+
+      try {
+        var result = yield request
+          .get(`http://localhost:${server.address().port}`)
+          .set('accept', 'text/html')
+          .query({proboBuildId: buildId})
+          .end();
+
+        // This shouldn't happen. We should throw an error so the real test in
+        // the catch statement.
+        result.should.equal(null);
+      }
+      catch (e) {
+        // Since we do not have a redirection URL set but do have accept
+        // headers for HTML get an HTML page back.
+        e.response.statusCode.should.eql(404);
+        e.response.header['content-type'].should.eql('text/html');
+        e.response.text.should.eql('<h1>NOGO</h1><p>Build has been reaped</p>');
+      }
+    });
+
+    it('returns an HTML 404 response if the default is not set', function* () {
+      var buildId = 'adb2f22d-6b31-49e3-b95b-98ec823bd6f8';
+      // Set the redirection URL;
+      conf.redirectUrl = '';
+      // Set the redirection URL;
+      conf.custom404Html = '';
+
+      try {
+        var result = yield request
+          .get(`http://localhost:${server.address().port}`)
+          .set('accept', 'text/html')
+          .query({proboBuildId: buildId})
+          .end();
+
+        // This shouldn't happen. We should throw an error so the real test in
+        // the catch statement.
+        result.should.equal(null);
+      }
+      catch (e) {
+        e.response.statusCode.should.eql(404);
+        e.response.header['content-type'].should.eql('text/html');
+        e.response.text.should.eql('<p>Build has been reaped</p>');
+      }
+    });
+
+    it('returns a plaintext 404 response', function* () {
+      var buildId = 'eeb2f22d-6b31-49e3-b95b-98ec823bd6f8';
+      try {
+        var result = yield request
+          .get(`http://localhost:${server.address().port}`)
+          .query({proboBuildId: buildId})
+          .end();
+
+        // This shouldn't happen. We should throw an error so the real test in
+        // the catch statement.
+        result.should.equal(null);
+      }
+      catch (e) {
+        e.response.statusCode.should.eql(404);
+        e.response.text.should.eql('Proxy error: Build has been reaped\n');
+      }
+    });
+
+    it('returns a json 404 response', function* () {
+      // Set the redirection URL;
+      conf.redirectUrl = 'http://test.com';
+      // Set the redirection URL;
+      conf.custom404Html = '<h1>THIS SHOULD BE A JSON RESPONSE</h1>';
+      var buildId = 'efb2f22d-6b31-49e3-b95b-98ec823bd6f8';
+      try {
+        var result = yield request
+          .get(`http://localhost:${server.address().port}`)
+          .set('accept', 'application/json')
+          .query({proboBuildId: buildId})
+          .end();
+
+        // This shouldn't happen. We should throw an error so the real test in
+        // the catch statement.
+        result.should.equal(null);
+      }
+      catch (e) {
+        var err = {
+          message: 'Build has been reaped',
+          statusCode: 404,
+          errorCode: '404R',
+          htmlResponse: '<h1>THIS SHOULD BE A JSON RESPONSE</h1><p>Build has been reaped</p>',
+          redirectUrl: 'http://test.com?errorCode=404R'
+        };
+        e.response.statusCode.should.eql(404);
+        e.response.text.should.eql(JSON.stringify(err));
       }
     });
   });

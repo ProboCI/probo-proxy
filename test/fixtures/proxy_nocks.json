@@ -66,6 +66,86 @@
     }
   },
   {
+    "scope": "http://localhost:3020",
+    "method": "POST",
+    "path": "/container/proxy?build=aab2f22d-6b31-49e3-b95b-98ec823bd6f8&dest=aab2f22d-6b31-49e3-b95b-98ec823bd6f8",
+    "body": "",
+    "status": 404,
+    "response": {
+      "errorCode": "404R",
+      "message": "Build has been reaped"
+    },
+    "headers": {
+      "content-type": "application/json",
+      "date": "Wed, 09 Sep 2015 16:14:57 GMT",
+      "connection": "close"
+    }
+  },
+  {
+    "scope": "http://localhost:3020",
+    "method": "POST",
+    "path": "/container/proxy?build=acb2f22d-6b31-49e3-b95b-98ec823bd6f8&dest=acb2f22d-6b31-49e3-b95b-98ec823bd6f8",
+    "body": "",
+    "status": 404,
+    "response": {
+      "errorCode": "404R",
+      "message": "Build has been reaped"
+    },
+    "headers": {
+      "content-type": "application/json",
+      "date": "Wed, 09 Sep 2015 16:14:57 GMT",
+      "connection": "close"
+    }
+  },
+  {
+    "scope": "http://localhost:3020",
+    "method": "POST",
+    "path": "/container/proxy?build=adb2f22d-6b31-49e3-b95b-98ec823bd6f8&dest=adb2f22d-6b31-49e3-b95b-98ec823bd6f8",
+    "body": "",
+    "status": 404,
+    "response": {
+      "errorCode": "404R",
+      "message": "Build has been reaped"
+    },
+    "headers": {
+      "content-type": "application/json",
+      "date": "Wed, 09 Sep 2015 16:14:57 GMT",
+      "connection": "close"
+    }
+  },
+  {
+    "scope": "http://localhost:3020",
+    "method": "POST",
+    "path": "/container/proxy?build=eeb2f22d-6b31-49e3-b95b-98ec823bd6f8&dest=eeb2f22d-6b31-49e3-b95b-98ec823bd6f8",
+    "body": "",
+    "status": 404,
+    "response": {
+      "errorCode": "404R",
+      "message": "Build has been reaped"
+    },
+    "headers": {
+      "content-type": "application/json",
+      "date": "Wed, 09 Sep 2015 16:14:57 GMT",
+      "connection": "close"
+    }
+  },
+  {
+    "scope": "http://localhost:3020",
+    "method": "POST",
+    "path": "/container/proxy?build=efb2f22d-6b31-49e3-b95b-98ec823bd6f8&dest=efb2f22d-6b31-49e3-b95b-98ec823bd6f8",
+    "body": "",
+    "status": 404,
+    "response": {
+      "errorCode": "404R",
+      "message": "Build has been reaped"
+    },
+    "headers": {
+      "content-type": "application/json",
+      "date": "Wed, 09 Sep 2015 16:14:57 GMT",
+      "connection": "close"
+    }
+  },
+  {
     "scope": "http://localhost:49348/?proboBuildId=ccb2f22d-6b31-49e3-b95b-98ec823bd6f8",
     "method": "GET",
     "path": "/?proboBuildId=ccb2f22d-6b31-49e3-b95b-98ec823bd6f8",
