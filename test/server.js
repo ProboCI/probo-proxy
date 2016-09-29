@@ -283,7 +283,7 @@ describe('lookup tests', function() {
           statusCode: 404,
           errorCode: '404R',
           htmlResponse: '<h1>THIS SHOULD BE A JSON RESPONSE</h1><p>Build has been reaped</p>',
-          redirectUrl: 'http://test.com?errorCode=404R'
+          redirectUrl: 'http://test.com?errorCode=404R',
         };
         e.response.statusCode.should.eql(404);
         e.response.text.should.eql(JSON.stringify(err));
