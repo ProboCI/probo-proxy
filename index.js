@@ -1,10 +1,10 @@
 'use strict';
 
-var ms = require('ms')
+var ms = require('ms');
 
 var config = require('./lib/config');
 
-process.title = 'probo-proxy'
+process.title = 'probo-proxy';
 
 config.load(function(error, config) {
   if (error) {
