@@ -15,3 +15,7 @@ cacheMax: 500
 
 # Max age of proxy lookup responses in cache, in any unit (units default to ms). Defaults to 5 min
 cacheMaxAge: 1s
+
+redirectUrl: ''
+
+custom404Html: '<h1>404 - Build Not Found</h1><p>The build could not be found</p>'
