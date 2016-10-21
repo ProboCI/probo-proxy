@@ -14,6 +14,7 @@
   "author": "Ilya Braude <ilya@bluenexa.com>",
   "license": "Proprietary",
   "dependencies": {
+    "basic-auth": "^1.0.4",
     "bunyan": "^1.4.0",
     "http-proxy": "^1.11.1",
     "lodash": "^4.12.0",
