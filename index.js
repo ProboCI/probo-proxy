@@ -10,7 +10,7 @@ config.load(function(error, config) {
     throw error;
   }
 
-  var server = require('./lib/proxy').server(config);
+  var server = require('./lib/proxy').setupServer(config);
   var log = require('./lib/logger').getLogger();
 
   server.timeout = ms(config.serverTimeout || '10m');
