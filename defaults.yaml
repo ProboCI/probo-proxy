@@ -1,5 +1,11 @@
 # port that the proxy server is running on
 port: 3050
+
+# You will not need to change this unless you are hosting Probo inside a docker container.
+# If you are not doing that, do not change this value. If you are, this needs to be
+# changed to the intranet IP of the host machine or VM.
+hostname: localhost
+
 # server timeout, in any unit
 serverTimeout: 10m
 
