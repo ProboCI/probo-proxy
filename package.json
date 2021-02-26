@@ -8,8 +8,7 @@
     "prod": "node index.js -c prod.yaml",
     "startdev": "nodemon index.js -c dev.yaml | bunyan",
     "test": "mocha --recursive --require should",
-    "testw": "mocha -w --recursive --require should",
-    "coverage": "nyc _mocha -- -u exports -R spec --recursive --require should"
+    "testw": "mocha -w --recursive --require should"
   },
   "author": "Ilya Braude <ilya@bluenexa.com>",
   "license": "Proprietary",
