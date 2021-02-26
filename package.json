@@ -8,34 +8,33 @@
     "prod": "node index.js -c prod.yaml",
     "startdev": "nodemon index.js -c dev.yaml | bunyan",
     "test": "mocha --recursive --require should",
-    "testw": "mocha -w --recursive --require should",
-    "coverage": "istanbul cover _mocha -- -u exports -R spec --recursive --require should"
+    "testw": "mocha -w --recursive --require should"
   },
   "author": "Ilya Braude <ilya@bluenexa.com>",
   "license": "Proprietary",
   "dependencies": {
     "basic-auth": "^1.0.4",
-    "bunyan": "^1.4.0",
-    "http-proxy": "^1.11.1",
-    "lodash": "^4.12.0",
+    "bunyan": "^1.8.15",
+    "http-proxy": "^1.18.1",
+    "lodash": "^4.17.21",
     "lru-cache": "^2.6.5",
     "ms": "^0.7.1",
-    "request": "^2.60.0",
-    "restify": "^4.0.4",
+    "postman-request": "^2.88.1-postman.28",
+    "restify": "^8.5.1",
     "uuid": "^2.0.1",
-    "yaml-config-loader": "^2.0.1",
-    "yargs": "^4.6.0 "
+    "yaml-config-loader": "^2.1.0",
+    "yargs": "^16.2.0 "
   },
   "devDependencies": {
     "bluebird": "^2.10.0",
     "co-mocha": "^1.1.2",
-    "eslint": "^2.10.2",
+    "eslint": "^7.20.0",
     "eslint-config-probo": "^1.0.2",
-    "istanbul": "^0.3.19",
-    "mocha": "^2.3.2",
-    "nock": "^2.10.0",
+    "nyc": "^15.1.0",
+    "mocha": "^8.3.0",
+    "nock": "^13.0.8",
     "should": "^7.1.0",
-    "superagent": "^3.7.0",
+    "superagent": "^6.1.0",
     "superagent-promise": "^1.1.0"
   }
 }
