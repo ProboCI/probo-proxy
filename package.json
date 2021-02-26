@@ -15,7 +15,7 @@
   "license": "Proprietary",
   "dependencies": {
     "basic-auth": "^1.0.4",
-    "bunyan": "^1.4.0",
+    "bunyan": "^1.8.15",
     "http-proxy": "^1.18.1",
     "lodash": "^4.17.21",
     "lru-cache": "^2.6.5",
@@ -23,19 +23,19 @@
     "postman-request": "^2.88.1-postman.28",
     "restify": "^8.5.1",
     "uuid": "^2.0.1",
-    "yaml-config-loader": "^2.0.1",
+    "yaml-config-loader": "^2.1.0",
     "yargs": "^16.2.0 "
   },
   "devDependencies": {
     "bluebird": "^2.10.0",
     "co-mocha": "^1.1.2",
-    "eslint": "^2.10.2",
+    "eslint": "^7.20.0",
     "eslint-config-probo": "^1.0.2",
     "nyc": "^15.1.0",
     "mocha": "^8.3.0",
     "nock": "^13.0.8",
     "should": "^7.1.0",
     "superagent": "^6.1.0",
-    "superagent-promise": "^1.0.3"
+    "superagent-promise": "^1.1.0"
   }
 }
