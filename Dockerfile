@@ -15,4 +15,4 @@ WORKDIR /home/probo/app
 
 EXPOSE 3050
 
-CMD ["bin/probo-proxy"]
+CMD ["sh", "/home/probo/app/bin/startup.sh"]
