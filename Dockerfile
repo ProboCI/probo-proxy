@@ -1,7 +1,7 @@
 # ProboCI
 # https://www.probo.ci
 
-FROM node:12.20.2
+FROM node:12
 
 RUN useradd --user-group --create-home --shell /bin/false probo
 RUN mkdir -p /home/probo/app
