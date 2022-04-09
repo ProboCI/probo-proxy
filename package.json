@@ -1,6 +1,6 @@
 {
   "name": "probo-proxy",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Smart HTTP site proxy for ProboCI",
   "main": "index.js",
   "scripts": {
