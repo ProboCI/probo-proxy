@@ -14,14 +14,14 @@
 # limitations under the License.
 #
 
-FROM node:16
+FROM node:16-alpine
 
-RUN useradd --user-group --create-home --shell /bin/false probo
+#RUN useradd --user-group --create-home --shell /bin/false probo
 RUN mkdir -p /home/probo/app
 COPY . /home/probo/app
-RUN chown -R probo:probo /home/probo/app
+#RUN chown -R probo:probo /home/probo/app
 
-USER probo
+#USER probo
 RUN cd /home/probo/app/ && npm install
 
 WORKDIR /home/probo/app
