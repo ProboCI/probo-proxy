@@ -14,12 +14,12 @@
 # limitations under the License.
 #
 
-FROM node:22-alpine
+FROM node:22-slim
 
 RUN mkdir -p /home/probo/app
 COPY . /home/probo/app
 
-RUN cd /home/probo/app/ && npm install
+RUN cd /home/probo/app/ && npm install --omit=dev
 
 WORKDIR /home/probo/app
 
