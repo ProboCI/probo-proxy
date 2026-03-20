@@ -10,7 +10,6 @@ hostname: localhost
 serverTimeout: 10m
 
 # Host for the container lookup service that maps a build id to a host/port to proxy to
-#containerLookupHost: "http://localhost:3020"
 containerLookupHost: "http://localhost:3000"
 
 # Specifies if the lookup cache is enabled.
