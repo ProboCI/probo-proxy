@@ -21,6 +21,18 @@ cacheMax: 500
 # Max age of proxy lookup responses in cache, in any unit (units default to ms). Defaults to 5 min
 cacheMaxAge: 1s
 
+# Log file path. If set, logs are written to a rotating file instead of stdout.
+# logFile: '/var/log/probo/probo-proxy.log'
+
+# Log rotation period (e.g. '1d', '1w', '6h'). Defaults to '1d'.
+# logRotatePeriod: '1d'
+
+# Number of rotated log files to keep. Defaults to 14.
+# logRotateCount: 14
+
+# Log level: trace, debug, info, warn, error, fatal. Defaults to 'debug'.
+# logLevel: 'debug'
+
 redirectUrl: ''
 
 custom404Html: '<h1>404 - Build Not Found</h1><p>The build could not be found</p>'

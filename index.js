@@ -10,8 +10,10 @@ config.load(function(error, config) {
     throw error;
   }
 
+  var logger = require('./lib/logger');
+  logger.createLogger(config);
   var server = require('./lib/proxy').setupServer(config);
-  var log = require('./lib/logger').getLogger();
+  var log = logger.getLogger();
 
   server.timeout = ms(config.serverTimeout || '10m');
 
