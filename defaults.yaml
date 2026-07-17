@@ -63,6 +63,15 @@ healthCheckCacheMax: 500
 # as the Retry-After header. Defaults to 3.
 healthCheckRefreshSeconds: 3
 
-# Optional custom HTML body for the "activating" screen (wrapped in a page that
-# supplies the auto-refresh meta tag).
-# activatingHtml: '<h1>Your build is activating</h1>'
+# HTML template for the "build is activating" screen. Placeholders {{message}},
+# {{refresh}}, and {{title}} are substituted at render time. Defaults to the
+# bundled navy Probo.CI template (templates/activating.html). Point this at your
+# own file to fully restyle the page.
+# activatingTemplate: '/etc/probo/activating.html'
+
+# Message shown on the activating screen (the {{message}} placeholder), also
+# used for the JSON/plain-text 503 responses.
+# activatingMessage: 'Your build is spinning up and will be ready in a moment.'
+
+# Title (browser tab / {{title}} placeholder) for the activating screen.
+# activatingTitle: 'Build activating'
