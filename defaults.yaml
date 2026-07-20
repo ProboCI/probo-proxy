@@ -51,12 +51,13 @@ healthCheckTimeout: 5s
 # Leave unset to probe '/'.
 healthCheckPath: '/healthcheck'
 
-# How long a passing health check is cached per target URL, in any unit.
-# During this window requests skip the probe. Failures are never cached.
-# Defaults to 30s.
-healthCheckCacheMaxAge: 30s
+# How long a passing health check is cached per container, in any unit. The key
+# is the container origin (host:port), so one passing probe marks the container
+# healthy for every path. During this window requests skip the probe. Failures
+# are never cached. Defaults to 30m.
+healthCheckCacheMaxAge: 30m
 
-# Max number of target URLs to track in the health check cache. Defaults to 500.
+# Max number of containers to track in the health check cache. Defaults to 500.
 healthCheckCacheMax: 500
 
 # Auto-refresh interval (seconds) on the "build is activating" screen, also sent
