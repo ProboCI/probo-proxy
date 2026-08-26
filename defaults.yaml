@@ -37,9 +37,11 @@ redirectUrl: ''
 
 custom404Html: '<h1>404 - Build Not Found</h1><p>The build could not be found</p>'
 
-# Health check: probe the container before routing a browser navigation to it.
-# If the container is not answering yet, show an auto-refreshing "activating"
-# screen instead of a proxy error. Set to false to route without probing.
+# Health check: probe the container before routing any request to it. If the
+# container is not answering yet, browsers get an auto-refreshing "activating"
+# screen and everything else a 503, instead of a proxy error. Concurrent
+# requests for the same container share one probe. Set to false to route
+# without probing.
 healthCheckEnabled: true
 
 # Timeout for the health check probe, in any unit. Defaults to 5s.
