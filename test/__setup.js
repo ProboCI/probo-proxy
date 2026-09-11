@@ -16,3 +16,9 @@ process.env.CONTAINER_LOOKUP_HOST = 'http://localhost:3020';
 
 // disable caching
 process.env.CACHE_ENABLED = false;
+
+// no container to probe in tests; route straight through
+process.env.HEALTH_CHECK_ENABLED = false;
+
+// off by default; the rate limit tests enable it with their own numbers
+process.env.RATE_LIMIT_ENABLED = false;

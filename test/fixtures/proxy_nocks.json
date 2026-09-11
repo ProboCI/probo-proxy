@@ -146,7 +146,7 @@
     }
   },
   {
-    "scope": "http://localhost:49348/?proboBuildId=ccb2f22d-6b31-49e3-b95b-98ec823bd6f8",
+    "scope": "https://localhost:49348/?proboBuildId=ccb2f22d-6b31-49e3-b95b-98ec823bd6f8",
     "method": "GET",
     "path": "/?proboBuildId=ccb2f22d-6b31-49e3-b95b-98ec823bd6f8",
     "body": "",
