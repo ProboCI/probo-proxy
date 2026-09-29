@@ -79,6 +79,29 @@ healthCheckRefreshSeconds: 3
 # Title (browser tab / {{title}} placeholder) for the activating screen.
 # activatingTitle: 'Build activating'
 
+# Maintenance mode: while Probo is in maintenance mode (switched on by an
+# administrator in probo-web and stored in the coordinator), every build shows
+# the maintenance page instead: a 503 with Retry-After, sent before any lookup
+# so no container is started. The proxy asks the coordinator
+# (containerLookupHost, with containerLookupAuthToken) and reuses the answer for
+# maintenanceCheckCacheMaxAge. If the coordinator can't be reached it keeps the
+# last answer it got. Set to false to never check.
+maintenanceCheckEnabled: true
+
+# Path of the coordinator's maintenance endpoint.
+maintenanceCheckPath: '/maintenance'
+
+# How long to reuse the coordinator's answer, in any unit. Defaults to 10s.
+maintenanceCheckCacheMaxAge: 10s
+
+# Timeout for asking the coordinator, in any unit. Defaults to 2s.
+maintenanceCheckTimeout: 2s
+
+# The page shown during maintenance. Defaults to the bundled
+# templates/maintenance.html, an identical copy of probo-web's
+# client/maintenance.html; keep the two in step if you replace it.
+# maintenanceTemplate: '/etc/probo/maintenance.html'
+
 # Rate limit: count requests per base URL (host + path, query string ignored)
 # and, once a base URL exceeds rateLimitMax hits within rateLimitWindow,
 # black-hole it for rateLimitBlockDuration. Black-holed requests are dropped
