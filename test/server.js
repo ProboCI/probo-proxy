@@ -1,5 +1,7 @@
 'use strict';
 
+var should = require('should');
+
 // APP LIBS BEING TESTED
 var config = require('../lib/config');
 
@@ -20,7 +22,7 @@ describe('lookup tests', function() {
       conf = _config;
 
       // make sure to require these after config is loaded
-      server = require('../lib/proxy').server;
+      server = require('../lib/proxy').setupServer(conf);
       proxyLookup = require('../lib/proxy-lookup');
       proxyRewrite = require('../lib/proxy-rewrite');
 
@@ -186,7 +188,9 @@ describe('lookup tests', function() {
         // Since we have a redirection URL set and accept headers for HTML we
         // should get a redirection.
         e.response.statusCode.should.eql(302);
-        e.response.header.location.should.eql('http://test.com?errorCode=404R');
+        e.response.header.location.should.eql(
+          'http://test.com?errorCode=404R&reason=Build has been reaped&buildId=undefined'
+        );
       }
     });
 
@@ -283,7 +287,7 @@ describe('lookup tests', function() {
           statusCode: 404,
           errorCode: '404R',
           htmlResponse: '<h1>THIS SHOULD BE A JSON RESPONSE</h1><p>Build has been reaped</p>',
-          redirectUrl: 'http://test.com?errorCode=404R',
+          redirectUrl: 'http://test.com?errorCode=404R&reason=Build has been reaped&buildId=undefined',
         };
         e.response.statusCode.should.eql(404);
         e.response.text.should.eql(JSON.stringify(err));
@@ -291,6 +295,119 @@ describe('lookup tests', function() {
     });
   });
 
+
+  describe('rate limit', function() {
+    var nock = require('nock');
+    var rateLimit;
+    var lookups;
+    var buildId = 'ccb2f22d-6b31-49e3-b95b-98ec823bd6f8';
+
+    before('nock out network calls', function() {
+      rateLimit = require('../lib/rate-limit');
+      lookups = 0;
+
+      // Count lookups so we can prove black-holed requests never make one.
+      nock('http://localhost:3020')
+        .persist()
+        .post('/container/proxy')
+        .query(true)
+        .reply(function() {
+          lookups++;
+          return [200, {
+            proxy: {host: 'localhost', port: '49348', url: 'http://localhost:49348/'},
+            buildConfig: {},
+          }];
+        });
+
+      nock('https://localhost:49348')
+        .persist()
+        .get(/.*/)
+        .reply(200, 'proxied page');
+    });
+
+    beforeEach('configure limiter', function() {
+      rateLimit.configure({
+        enabled: true,
+        max: 2,
+        window: '1m',
+        blockDuration: '10m',
+        action: 'drop',
+      });
+    });
+
+    after('cleanup', function() {
+      rateLimit.configure({enabled: false});
+      nock.cleanAll();
+    });
+
+    function get(path, query) {
+      return request
+        .get(`http://localhost:${server.address().port}${path}`)
+        .query(Object.assign({proboBuildId: buildId}, query))
+        .end();
+    }
+
+    it('drops the connection once a base URL exceeds the limit', function* () {
+      var r1 = yield get('/search', {f: 1});
+      var r2 = yield get('/search', {f: 2});
+      r1.res.text.should.eql('proxied page');
+      r2.res.text.should.eql('proxied page');
+      lookups.should.eql(2);
+
+      var caught = null;
+      try {
+        yield get('/search', {f: 3});
+      }
+      catch (e) {
+        caught = e;
+      }
+      should.exist(caught);
+      // No response at all: the socket was closed, not answered.
+      should.not.exist(caught.response);
+      caught.code.should.eql('ECONNRESET');
+
+      // Same result for the bare path, and still no lookup was made.
+      caught = null;
+      try {
+        yield get('/search');
+      }
+      catch (e) {
+        caught = e;
+      }
+      caught.code.should.eql('ECONNRESET');
+      lookups.should.eql(2);
+    });
+
+    it('leaves other base URLs on the same build alone', function* () {
+      // /search is black-holed from the previous test (10m block).
+      var r = yield get('/', {f: 1});
+      r.res.text.should.eql('proxied page');
+    });
+
+    it('answers 429 with Retry-After when action is 429', function* () {
+      rateLimit.configure({
+        enabled: true,
+        max: 2,
+        window: '1m',
+        blockDuration: '90s',
+        action: '429',
+      });
+
+      yield get('/catalog', {f: 1});
+      yield get('/catalog', {f: 2});
+
+      var caught;
+      try {
+        yield get('/catalog', {f: 3});
+      }
+      catch (e) {
+        caught = e;
+      }
+      caught.response.status.should.eql(429);
+      caught.response.header['retry-after'].should.eql('90');
+      caught.response.header.connection.should.eql('close');
+    });
+  });
 
   describe('proxy rewrites', function() {
     function createProxyInfo(buildConfigSites, dest) {

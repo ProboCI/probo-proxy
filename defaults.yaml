@@ -78,3 +78,30 @@ healthCheckRefreshSeconds: 3
 
 # Title (browser tab / {{title}} placeholder) for the activating screen.
 # activatingTitle: 'Build activating'
+
+# Rate limit: count requests per base URL (host + path, query string ignored)
+# and, once a base URL exceeds rateLimitMax hits within rateLimitWindow,
+# black-hole it for rateLimitBlockDuration. Black-holed requests are dropped
+# before any lookup, health check, or proxying happens. Purely in-memory; no
+# database or lookup-service call is involved in the decision.
+rateLimitEnabled: true
+
+# Hits per base URL per window before it is black-holed. Defaults to 100.
+rateLimitMax: 100
+
+# Counting window, in any unit. Defaults to 1m.
+rateLimitWindow: 1m
+
+# How long a tripped base URL stays black-holed, in any unit. Defaults to 10m.
+rateLimitBlockDuration: 10m
+
+# What a black-holed request gets: 'drop' closes the connection with no
+# response at all; '429' sends a bare 429 Too Many Requests with Retry-After.
+rateLimitAction: drop
+
+# If true, only requests carrying a query string count toward the limit, so
+# plain page loads of a path never trip it but facet-style crawls do.
+rateLimitQueryOnly: false
+
+# Max number of base URLs tracked in memory. Defaults to 10000.
+rateLimitCacheMax: 10000
