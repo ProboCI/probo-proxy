@@ -22,3 +22,6 @@ process.env.HEALTH_CHECK_ENABLED = false;
 
 // off by default; the rate limit tests enable it with their own numbers
 process.env.RATE_LIMIT_ENABLED = false;
+
+// off by default; the maintenance tests enable it against a nocked coordinator
+process.env.MAINTENANCE_CHECK_ENABLED = false;
